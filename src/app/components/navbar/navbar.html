@@ -1,0 +1,26 @@
+<nav class="navbar">
+  <span class="logo">Film<span>Sense</span></span>
+
+  <div class="search-wrapper">
+    <app-search-bar (search)="onSearch($event)" />
+
+    <div class="dropdown" *ngIf="searchResults.length > 0">
+      <div class="dropdown-item" *ngFor="let movie of searchResults">
+        <img
+          [src]="tmdb.getPosterUrl(movie.poster_path)"
+          [alt]="movie.title"
+          class="poster"
+        />
+        <div class="info">
+          <p class="title">{{ movie.title }}</p>
+          <p class="year">{{ tmdb.getReleaseYear(movie.release_date) }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="user">
+    <span class="user-name">{{ userName }}</span>
+    <button class="btn-logout" (click)="supabase.signOut()">Sair</button>
+  </div>
+</nav>
