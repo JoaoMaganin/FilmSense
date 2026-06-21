@@ -11,6 +11,9 @@ export class SupabaseService {
   private guestRatings: Rating[] = [];
 
   constructor() {
+    console.log('URL:', environment.supabaseUrl);
+    console.log('KEY:', environment.supabaseKey);
+
     this.supabase = createClient(
       environment.supabaseUrl,
       environment.supabaseKey
@@ -27,7 +30,12 @@ export class SupabaseService {
 
   // Auth
   signInWithGoogle() {
-    return this.supabase.auth.signInWithOAuth({ provider: 'google' });
+    return this.supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin
+      }
+    });
   }
 
   signOut() {
@@ -46,7 +54,7 @@ export class SupabaseService {
 
   // Ratings
   async getRatings(): Promise<Rating[]> {
-    if(this.guestMode) {
+    if (this.guestMode) {
       return this.guestRatings;
     }
 
@@ -60,10 +68,10 @@ export class SupabaseService {
   }
 
   async saveRating(rating: Rating): Promise<void> {
-    if(this.guestMode) {
+    if (this.guestMode) {
       const filmIndex = this.guestRatings.findIndex(film => film.tmdb_id === rating.tmdb_id);
-      if(filmIndex !== -1) {
-        this.guestRatings[filmIndex] = rating; 
+      if (filmIndex !== -1) {
+        this.guestRatings[filmIndex] = rating;
       } else {
         this.guestRatings.push(rating);
       }
@@ -78,10 +86,10 @@ export class SupabaseService {
   }
 
   async deleteRating(tmdbId: number): Promise<void> {
-    if(this.guestMode) {
+    if (this.guestMode) {
       let deletedFilmTmdbId = this.guestRatings.findIndex(film => film.tmdb_id === tmdbId);
 
-      if(deletedFilmTmdbId !== -1) {
+      if (deletedFilmTmdbId !== -1) {
         this.guestRatings.splice(deletedFilmTmdbId, 1)
       }
       return;
