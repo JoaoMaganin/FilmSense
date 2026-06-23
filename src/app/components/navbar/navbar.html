@@ -2,10 +2,10 @@
   <span class="logo">Film<span>Sense</span></span>
 
   <div class="search-wrapper">
-    <app-search-bar (search)="onSearch($event)" />
+    <app-search-bar (search)="onSearch($event)" [reset]="resetSearch" />
 
     <div class="dropdown" *ngIf="searchResults.length > 0">
-      <div class="dropdown-item" *ngFor="let movie of searchResults">
+      <div class="dropdown-item" *ngFor="let movie of searchResults" (click)="selectMovie(movie)">
         <img
           [src]="tmdb.getPosterUrl(movie.poster_path)"
           [alt]="movie.title"

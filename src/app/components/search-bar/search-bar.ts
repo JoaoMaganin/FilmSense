@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -8,13 +8,20 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './search-bar.scss',
 })
 
-export class SearchBarComponent {
+export class SearchBarComponent implements OnChanges {
   query = '';
 
   @Output() search = new EventEmitter<string>();
+  @Input() reset = false;
 
   onInput(value: string) {
     this.query = value;
     this.search.emit(value);
+  }
+
+  ngOnChanges() {
+    if (this.reset) {
+      this.query = '';
+    }
   }
 }

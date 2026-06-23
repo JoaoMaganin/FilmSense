@@ -1,1 +1,22 @@
-<p>rating-modal works!</p>
+<div class="overlay" (click)="close.emit()">
+    <div class="modal" (click)="$event.stopPropagation()">
+        <div class="movie-info">
+            <img [src]="tmdb.getPosterUrl(movie!.poster_path)" [alt]="movie!.title" class="poster" />
+            <div class="details">
+                <h2>{{ movie!.title }}</h2>
+                <p class="year">{{ tmdb.getReleaseYear(movie!.release_date) }}</p>
+                <p class="overview">{{ movie!.overview }}</p>
+            </div>
+        </div>
+
+        <div class="rating-section">
+            <p class="rating-label">Sua nota</p>
+            <div class="stars">
+                <button *ngFor="let n of [1,2,3,4,5,6,7,8,9,10]" class="star-btn" [class.active]="n <= hoveredNote"
+                    (mouseenter)="hoveredNote = n" (mouseleave)="hoveredNote = 0" (click)="confirm(n)">
+                    {{ n }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

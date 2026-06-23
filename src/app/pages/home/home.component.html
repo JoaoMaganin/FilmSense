@@ -1,1 +1,12 @@
-<app-navbar></app-navbar>
+<app-navbar (movieSelected)="onMovieSelected($event)" />
+
+<app-rating-modal
+  *ngIf="selectedMovie"
+  [movie]="selectedMovie"
+  (close)="onModalClose()"
+  (rated)="onRated($event)"
+/>
+
+<div class="toast" *ngIf="showConfirmation">
+  Avaliação salva com sucesso!
+</div>

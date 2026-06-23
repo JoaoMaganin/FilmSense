@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { SupabaseService } from '../../services/supabase.service';
 import { TmdbService } from '../../services/tmdb.service';
@@ -20,8 +20,10 @@ export class NavbarComponent implements OnInit {
     public tmdb: TmdbService // It is called directly in the HTML, so it is public
   ) { }
 
+  @Output() movieSelected = new EventEmitter<TmdbMovie>();
   userName: string = '';
   searchResults: TmdbMovie[] = [];
+  resetSearch = false;
 
   async ngOnInit() {
     const user = await this.supabase.getUser();
@@ -34,5 +36,11 @@ export class NavbarComponent implements OnInit {
       return
     }
     this.searchResults = await this.tmdb.searchMovies(query);
+  }
+
+  selectMovie(movie: TmdbMovie) {
+    this.movieSelected.emit(movie);
+    this.searchResults = [];
+    this.resetSearch = !this.resetSearch;
   }
 }
