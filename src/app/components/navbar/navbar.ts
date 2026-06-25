@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { SupabaseService } from '../../services/supabase.service';
 import { TmdbService } from '../../services/tmdb.service';
@@ -17,7 +17,8 @@ export class NavbarComponent implements OnInit {
   constructor(
     public supabase: SupabaseService,
     private router: Router,
-    public tmdb: TmdbService // It is called directly in the HTML, so it is public
+    public tmdb: TmdbService, // It is called directly in the HTML, so it is public
+    private cdr: ChangeDetectorRef
   ) { }
 
   @Output() movieSelected = new EventEmitter<TmdbMovie>();
@@ -28,6 +29,7 @@ export class NavbarComponent implements OnInit {
   async ngOnInit() {
     const user = await this.supabase.getUser();
     this.userName = user?.user_metadata?.['full_name'] ?? 'Visitante';
+    this.cdr.detectChanges();
   }
 
   async onSearch(query: string) {
