@@ -29,7 +29,8 @@ export class RatingModal {
       rating: nota,
       genres: this.movie.genre_ids,
       release_year: this.tmdb.getReleaseYear(this.movie.release_date),
-      popularity: this.movie.popularity
+      popularity: this.movie.popularity,
+      poster_path: this.movie.poster_path
     };
 
     this.rated.emit(rating);

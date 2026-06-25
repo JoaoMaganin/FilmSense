@@ -7,4 +7,5 @@ export interface Rating {
   genres: number[];
   release_year: number;
   popularity: number;
+  poster_path?: string;
 }

@@ -38,9 +38,15 @@ export class SupabaseService {
     });
   }
 
-  signOut() {
-    return this.supabase.auth.signOut();
+  async signOut() {
+    this.guestMode = false;
+    this.guestRatings = [];
+    await this.supabase.auth.signOut();
   }
+
+  // signOut() {
+  //   return this.supabase.auth.signOut();
+  // }
 
   getUser(): Promise<User | null> {
     return this.supabase.auth.getUser().then(({ data }) => data.user);
@@ -68,6 +74,8 @@ export class SupabaseService {
   }
 
   async saveRating(rating: Rating): Promise<void> {
+    const user = await this.getUser();
+
     if (this.guestMode) {
       const filmIndex = this.guestRatings.findIndex(film => film.tmdb_id === rating.tmdb_id);
       if (filmIndex !== -1) {
@@ -80,7 +88,10 @@ export class SupabaseService {
 
     const { error } = await this.supabase
       .from('ratings')
-      .upsert(rating, { onConflict: 'user_id,tmdb_id' });
+      .upsert(
+        {...rating, user_id: user?.id}, 
+        { onConflict: 'user_id,tmdb_id' }
+      );
 
     if (error) throw error;
   }

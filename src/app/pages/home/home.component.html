@@ -1,5 +1,34 @@
 <app-navbar (movieSelected)="onMovieSelected($event)" />
 
+<main class="container">
+  <section class="rated-section" *ngIf="ratings.length > 0">
+    <h2 class="section-title">Filmes avaliados</h2>
+    <div class="movies-grid">
+      <div class="movie-card" *ngFor="let rating of ratings">
+        <div class="poster-wrapper">
+          <img
+            *ngIf="rating.poster_path"
+            [src]="'https://image.tmdb.org/t/p/w300' + rating.poster_path"
+            [alt]="rating.title"
+            class="poster"
+          />
+          <div *ngIf="!rating.poster_path" class="poster poster-placeholder"></div>
+          <span class="rating-badge">{{ rating.rating }}</span>
+        </div>
+        <div class="card-info">
+          <p class="title">{{ rating.title }}</p>
+          <p class="year">{{ rating.release_year }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="empty" *ngIf="ratings.length === 0">
+    <p class="empty-title">Nenhum filme avaliado ainda</p>
+    <p class="empty-sub">Busque um filme na barra acima para começar</p>
+  </section>
+</main>
+
 <app-rating-modal
   *ngIf="selectedMovie"
   [movie]="selectedMovie"

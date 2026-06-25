@@ -43,4 +43,9 @@ export class NavbarComponent implements OnInit {
     this.searchResults = [];
     this.resetSearch = !this.resetSearch;
   }
+
+  async signOut() {
+    await this.supabase.signOut();
+    this.router.navigate(['/login']);
+  }
 }
