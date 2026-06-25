@@ -56,6 +56,7 @@ export class HomeComponent implements OnInit {
     console.log('ratings length:', this.ratings.length);
     console.log('ratings:', this.ratings);
     this.showConfirmation = true;
+    this.cdr.detectChanges();
     setTimeout(() => this.showConfirmation = false, 3000);
   }
 }
