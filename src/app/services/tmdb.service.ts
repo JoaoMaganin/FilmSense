@@ -40,4 +40,13 @@ export class TmdbService {
   getReleaseYear(releaseDate: string): number {
     return parseInt(releaseDate?.split('-')[0] ?? '0');
   }
+
+  async getMovieDetails(tmdbId: number): Promise<TmdbMovie> {
+    const res = await fetch(
+      `${this.baseUrl}/movie/${tmdbId}?language=pt-BR`,
+      { headers: this.headers }
+    );
+    const data = await res.json();
+    return data;
+  }
 }

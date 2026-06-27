@@ -34,5 +34,5 @@ export async function recommend(
 
     const sortedMovies = recommendations.sort((a, b) => b.score - a.score)
 
-    return sortedMovies.slice(0, 10);
+    return sortedMovies.slice(0, 20);
 }

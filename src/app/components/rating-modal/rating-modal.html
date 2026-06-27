@@ -5,6 +5,9 @@
             <div class="details">
                 <h2>{{ movie!.title }}</h2>
                 <p class="year">{{ tmdb.getReleaseYear(movie!.release_date) }}</p>
+                <div class="genres" *ngIf="movie!.genres && movie!.genres.length > 0">
+                    <span class="genre-tag" *ngFor="let genre of movie!.genres">{{ genre.name }}</span>
+                </div>
                 <p class="overview">{{ movie!.overview }}</p>
             </div>
         </div>

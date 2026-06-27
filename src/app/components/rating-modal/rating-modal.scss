@@ -99,3 +99,19 @@
       color: #AFA9EC;
     }
   }
+
+  .genres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 6px 0;
+  }
+  
+  .genre-tag {
+    font-size: 11px;
+    color: #AFA9EC;
+    background: rgba(127, 119, 221, 0.15);
+    border: 0.5px solid rgba(127, 119, 221, 0.3);
+    border-radius: 99px;
+    padding: 2px 8px;
+  }

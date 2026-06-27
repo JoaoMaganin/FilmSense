@@ -23,6 +23,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  cursor: pointer;
 }
 
 .poster-wrapper {
@@ -50,8 +51,8 @@
   right: 8px;
   font-size: 12px;
   font-weight: 500;
-  background: rgba(127, 119, 221, 0.25);
-  color: #AFA9EC;
+  background: rgba(0, 0, 0, 0.25);
+  color: #ffffff;
   border-radius: 99px;
   padding: 2px 8px;
 }

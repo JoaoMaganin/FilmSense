@@ -4,7 +4,7 @@
   <section class="rated-section" *ngIf="ratings.length > 0">
     <h2 class="section-title">Filmes avaliados</h2>
     <div class="movies-grid">
-      <div class="movie-card" *ngFor="let rating of ratings">
+      <div class="movie-card" *ngFor="let rating of ratings" (click)="onRatingSelected(rating)">
         <div class="poster-wrapper">
           <img
             *ngIf="rating.poster_path"
@@ -48,7 +48,7 @@
       <span class="rec-badge">via TF.js</span>
     </h2>
     <div class="movies-grid">
-      <div class="movie-card" *ngFor="let movie of recommendations">
+      <div class="movie-card" *ngFor="let movie of recommendations" (click)="onMovieSelected(movie)">
         <div class="poster-wrapper">
           <img
             *ngIf="movie.poster_path"
