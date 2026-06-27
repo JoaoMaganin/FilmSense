@@ -61,6 +61,23 @@
   padding: 0 2px;
 }
 
+.btn-expand {
+  margin-top: 16px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+  background: none;
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 7px 16px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+
+  &:hover {
+    color: rgba(255, 255, 255, 0.7);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+}
+
 .title {
   font-size: 13px;
   font-weight: 500;

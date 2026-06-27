@@ -4,7 +4,7 @@
   <section class="rated-section" *ngIf="ratings.length > 0">
     <h2 class="section-title">Filmes avaliados</h2>
     <div class="movies-grid">
-      <div class="movie-card" *ngFor="let rating of ratings" (click)="onRatingSelected(rating)">
+      <div class="movie-card" *ngFor="let rating of visibleRatings" (click)="onRatingSelected(rating)">
         <div class="poster-wrapper">
           <img
             *ngIf="rating.poster_path"
@@ -21,6 +21,9 @@
         </div>
       </div>
     </div>
+    <button class="btn-expand" (click)="showAllRatings = !showAllRatings">
+      {{ showAllRatings ? 'Ver menos' : 'Ver todas as avaliações (' + ratings.length + ')' }}
+    </button>
 
     <div class="ml-bar">
       <div class="ml-info">

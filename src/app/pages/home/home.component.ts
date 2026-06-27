@@ -27,9 +27,14 @@ export class HomeComponent implements OnInit {
   model: tf.Sequential | null = null;
   recommendations: TmdbMovie[] = [];
   isTraining = false;
+  showAllRatings = false;
 
   selectedMovie: TmdbMovie | null = null;
   showConfirmation = false;
+
+  get visibleRatings() {
+    return this.showAllRatings ? this.ratings : this.ratings.slice(0, 6);
+  }
 
   async onMovieSelected(movie: TmdbMovie) {
     const details = await this.tmdbService.getMovieDetails(movie.id);
