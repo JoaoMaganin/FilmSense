@@ -33,7 +33,7 @@ Suas avaliações (Supabase)
   → Extração de features (genres, ano, popularidade)
   → Treinamento da rede neural (TF.js no browser)
   → Inferência em filmes populares (TMDB)
-  → Top 2W0 recomendações ordenadas por score previsto
+  → Top 20 recomendações ordenadas por score previsto
 ```
 
 ### Arquitetura da rede

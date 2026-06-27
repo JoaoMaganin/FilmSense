@@ -100,7 +100,15 @@ export class HomeComponent implements OnInit {
     this.cdr.detectChanges();
 
     const pages = await Promise.all([1, 2, 3, 4, 5].map(p => this.tmdbService.getPopularMovies(p)));
-    const popularMovies = pages.flat();
+    const allMovies = pages.flat();
+
+    const seen = new Set<number>();
+    const popularMovies = allMovies.filter(movie => {
+      if (seen.has(movie.id)) return false;
+      seen.add(movie.id);
+      return true;
+    });
+
     const ratedIds = this.ratings.map(rating => rating.tmdb_id);
     this.recommendations = await recommend(this.model!, popularMovies, ratedIds);
     this.cdr.detectChanges();
