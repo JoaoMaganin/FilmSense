@@ -6,4 +6,5 @@ export interface TmdbMovie {
   popularity: number;
   poster_path: string;
   overview: string;
+  score?: number;
 }
