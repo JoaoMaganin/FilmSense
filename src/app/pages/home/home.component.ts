@@ -4,21 +4,29 @@ import { TmdbMovie } from '../../models/tmdb.model';
 import { Rating } from '../../models/rating.model';
 import { SupabaseService } from '../../services/supabase.service';
 import { RatingModal } from '../../components/rating-modal/rating-modal';
-import { CommonModule } from '@angular/common';
+import { CommonModule, SlicePipe } from '@angular/common';
+import * as tf from '@tensorflow/tfjs';
+import { trainModel } from '../../ml/model';
+import { recommend } from '../../ml/recommend';
+import { TmdbService } from '../../services/tmdb.service';
 
 @Component({
   selector: 'app-home',
-  imports: [NavbarComponent, RatingModal, CommonModule],
+  imports: [NavbarComponent, RatingModal, CommonModule, SlicePipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
   constructor(
     public supabase: SupabaseService,
-    private cdr: ChangeDetectorRef
+    private tmdbService: TmdbService,
+    private cdr: ChangeDetectorRef,
   ) { }
 
   ratings: Rating[] = [];
+  model: tf.Sequential | null = null;
+  recommendations: TmdbMovie[] = [];
+  isTraining = false;
 
   selectedMovie: TmdbMovie | null = null;
   showConfirmation = false;
@@ -31,16 +39,11 @@ export class HomeComponent implements OnInit {
     this.selectedMovie = null;
   }
 
-  // async ngOnInit() {
-  //   this.ratings = await this.supabase.getRatings();
-  // }
-
   async ngOnInit() {
     this.supabase.onAuthChange(async (user) => {
       if (user || this.supabase.isGuest) {
         this.ratings = [...await this.supabase.getRatings()];
         this.cdr.detectChanges();
-        console.log('ratings carregados:', this.ratings.length);
       }
     });
 
@@ -53,10 +56,21 @@ export class HomeComponent implements OnInit {
   async onRated(rating: Rating) {
     await this.supabase.saveRating(rating);
     this.ratings = [...await this.supabase.getRatings()];
-    console.log('ratings length:', this.ratings.length);
-    console.log('ratings:', this.ratings);
     this.showConfirmation = true;
     this.cdr.detectChanges();
     setTimeout(() => this.showConfirmation = false, 3000);
+  }
+
+  async onRecommend() {
+    this.isTraining = true;
+    this.model = await trainModel(this.ratings);
+    this.isTraining = false;
+    this.cdr.detectChanges();
+  
+    const pages = await Promise.all([1,2,3,4,5].map(p => this.tmdbService.getPopularMovies(p)));
+    const popularMovies = pages.flat();
+    const ratedIds = this.ratings.map(rating => rating.tmdb_id);
+    this.recommendations = await recommend(this.model!, popularMovies, ratedIds);
+    this.cdr.detectChanges();
   }
 }

@@ -21,11 +21,50 @@
         </div>
       </div>
     </div>
+
+    <div class="ml-bar">
+      <div class="ml-info">
+        <span class="ml-status" *ngIf="!model && !isTraining">Modelo não treinado</span>
+        <span class="ml-status training" *ngIf="isTraining">Treinando...</span>
+        <span class="ml-status ready" *ngIf="model && !isTraining">Modelo pronto</span>
+        <span class="ml-sub">{{ ratings.length }} filmes avaliados</span>
+      </div>
+      <div class="ml-actions">
+        <button class="btn-recommend" (click)="onRecommend()" [disabled]="isTraining || ratings.length < 3">
+          {{ isTraining ? 'Analisando...' : 'Recomendar filmes' }}
+        </button>
+      </div>
+    </div>
   </section>
 
   <section class="empty" *ngIf="ratings.length === 0">
     <p class="empty-title">Nenhum filme avaliado ainda</p>
     <p class="empty-sub">Busque um filme na barra acima para começar</p>
+  </section>
+
+  <section class="rec-section" *ngIf="recommendations.length > 0">
+    <h2 class="section-title">
+      Recomendados para você
+      <span class="rec-badge">via TF.js</span>
+    </h2>
+    <div class="movies-grid">
+      <div class="movie-card" *ngFor="let movie of recommendations">
+        <div class="poster-wrapper">
+          <img
+            *ngIf="movie.poster_path"
+            [src]="'https://image.tmdb.org/t/p/w300' + movie.poster_path"
+            [alt]="movie.title"
+            class="poster"
+          />
+          <div *ngIf="!movie.poster_path" class="poster poster-placeholder"></div>
+          <span class="rating-badge score">{{ (movie.score! * 10).toFixed(1) }}</span>
+        </div>
+        <div class="card-info">
+          <p class="title">{{ movie.title }}</p>
+          <p class="year">{{ movie.release_date | slice:0:4 }}</p>
+        </div>
+      </div>
+    </div>
   </section>
 </main>
 
