@@ -1,18 +1,30 @@
 <div class="overlay" (click)="close.emit()">
     <div class="modal" (click)="$event.stopPropagation()">
-        <div class="movie-info">
-            <img [src]="tmdb.getPosterUrl(movie!.poster_path)" [alt]="movie!.title" class="poster" />
-            <div class="details">
-                <h2>{{ movie!.title }}</h2>
-                <p class="year">{{ tmdb.getReleaseYear(movie!.release_date) }}</p>
-                <div class="genres" *ngIf="movie!.genres && movie!.genres.length > 0">
-                    <span class="genre-tag" *ngFor="let genre of movie!.genres">{{ genre.name }}</span>
-                </div>
-                <p class="overview">{{ movie!.overview }}</p>
-            </div>
+
+        <div class="backdrop"
+            [style.backgroundImage]="movie!.backdrop_path ? 'url(https://image.tmdb.org/t/p/w780' + movie!.backdrop_path + ')' : 'none'">
+            <div class="backdrop-overlay"></div>
+            <button class="close-btn" (click)="close.emit()">
+                <i class="ti ti-x" aria-hidden="true">X</i>
+            </button>
         </div>
 
-        <div class="rating-section">
+        <div class="content">
+            <div class="movie-header">
+                <img class="poster" [src]="tmdb.getPosterUrl(movie!.poster_path)" [alt]="movie!.title" />
+                <div class="movie-meta">
+                    <p class="movie-title">{{ movie!.title }}</p>
+                    <p class="movie-year">{{ tmdb.getReleaseYear(movie!.release_date) }}</p>
+                    <div class="genres" *ngIf="movie!.genres?.length">
+                        <span class="genre-tag" *ngFor="let genre of movie!.genres">{{ genre.name }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <p class="overview" *ngIf="movie!.overview">{{ movie!.overview }}</p>
+
+            <div class="divider"></div>
+
             <p class="rating-label">Sua nota</p>
             <div class="stars">
                 <button *ngFor="let n of [1,2,3,4,5,6,7,8,9,10]" class="star-btn" [class.active]="n <= hoveredNote"
@@ -21,5 +33,6 @@
                 </button>
             </div>
         </div>
+
     </div>
 </div>

@@ -8,4 +8,5 @@ export interface TmdbMovie {
   poster_path: string;
   overview: string;
   score?: number;
+  backdrop_path: string;
 }

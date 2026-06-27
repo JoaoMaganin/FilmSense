@@ -8,4 +8,5 @@ export interface Rating {
   release_year: number;
   popularity: number;
   poster_path?: string;
+  backdrop_path?: string;
 }
