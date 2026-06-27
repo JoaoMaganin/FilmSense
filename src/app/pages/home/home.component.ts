@@ -57,6 +57,7 @@ export class HomeComponent implements OnInit {
     this.supabase.onAuthChange(async (user) => {
       if (user || this.supabase.isGuest) {
         this.ratings = [...await this.supabase.getRatings()];
+        this.onRecommend();
         this.cdr.detectChanges();
       }
     });
@@ -79,6 +80,15 @@ export class HomeComponent implements OnInit {
     await this.supabase.saveRating(rating);
     this.ratings = [...await this.supabase.getRatings()];
     this.showToast('Avaliação salva com sucesso!');
+
+    if (this.ratings.length >= 3) {
+      await this.onRecommend();
+    } else {
+      this.recommendations = this.recommendations.filter(
+        m => m.id !== rating.tmdb_id
+      );
+    }
+
     this.cdr.detectChanges();
   }
 
