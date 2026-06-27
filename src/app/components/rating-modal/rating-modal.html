@@ -27,9 +27,16 @@
 
             <p class="rating-label">Sua nota</p>
             <div class="stars">
-                <button *ngFor="let n of [1,2,3,4,5,6,7,8,9,10]" class="star-btn" [class.active]="n <= hoveredNote"
-                    (mouseenter)="hoveredNote = n" (mouseleave)="hoveredNote = 0" (click)="confirm(n)">
-                    {{ n }}
+                <button
+                    *ngFor="let n of [1,2,3,4,5,6,7,8,9,10]"
+                    class="star-btn"
+                    [class.active]="n <= hoveredNote"
+                    [class.current]="n === currentRating && hoveredNote === 0"
+                    (mouseenter)="hoveredNote = n"
+                    (mouseleave)="hoveredNote = 0"
+                    (click)="confirm(n)"
+                    >
+                        {{ n }}
                 </button>
             </div>
         </div>

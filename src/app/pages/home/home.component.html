@@ -78,6 +78,7 @@
 <app-rating-modal
   *ngIf="selectedMovie"
   [movie]="selectedMovie"
+  [currentRating]="currentRating"
   (close)="onModalClose()"
   (rated)="onRated($event)"
 />

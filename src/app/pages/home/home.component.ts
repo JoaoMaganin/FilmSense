@@ -28,6 +28,7 @@ export class HomeComponent implements OnInit {
   model: tf.Sequential | null = null;
   recommendations: TmdbMovie[] = [];
   isTraining = false;
+
   showAllRatings = false;
 
   selectedMovie: TmdbMovie | null = null;
@@ -36,20 +37,19 @@ export class HomeComponent implements OnInit {
 
   ratingToDelete: Rating | null = null;
 
+  currentRating = 0;
+
   get visibleRatings() {
     return this.showAllRatings ? this.ratings : this.ratings.slice(0, 6);
   }
 
   async onMovieSelected(movie: TmdbMovie) {
-    const details = await this.tmdbService.getMovieDetails(movie.id);
-    this.selectedMovie = {
-      ...movie,
-      ...details,
-    };
-    this.cdr.detectChanges();
+    this.currentRating = 0;
+    this.selectedMovie = movie;
   }
 
   onModalClose() {
+    this.currentRating = 0;
     this.selectedMovie = null;
   }
 
@@ -75,13 +75,14 @@ export class HomeComponent implements OnInit {
   }
 
   async onRatingSelected(rating: Rating) {
+    this.currentRating = rating.rating
     const details = await this.tmdbService.getMovieDetails(rating.tmdb_id);
     this.selectedMovie = {
       ...details,
       id: rating.tmdb_id,
       genre_ids: details.genre_ids ?? rating.genres,
     };
-    this.cdr.detectChanges
+    this.cdr.detectChanges();
   }
 
   async onRecommend() {

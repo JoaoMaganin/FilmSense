@@ -16,6 +16,7 @@ export class RatingModal {
   ) {}
 
   @Input() movie: TmdbMovie | null = null;
+  @Input() currentRating: number = 0;
   @Output() close = new EventEmitter<void>();
   @Output() rated = new EventEmitter<Rating>();
   hoveredNote = 0;

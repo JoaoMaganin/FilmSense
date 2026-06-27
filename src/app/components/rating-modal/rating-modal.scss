@@ -155,3 +155,9 @@
     color: #AFA9EC;
   }
 }
+
+.star-btn.current {
+  background: rgba(93, 202, 165, 0.15);
+  border-color: rgba(93, 202, 165, 0.35);
+  color: #5DCAA5;
+}
