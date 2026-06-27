@@ -15,7 +15,7 @@
           <div *ngIf="!rating.poster_path" class="poster poster-placeholder"></div>
           <span class="rating-badge">{{ rating.rating }}</span>
           <button class="delete-btn" (click)="onDeleteRating(rating, $event)">
-            <i class="ti ti-trash" aria-hidden="true">🗑️</i>
+            <i class="ti ti-trash" aria-hidden="true"></i>
           </button>
         </div>
         <div class="card-info">
@@ -35,6 +35,9 @@
         <span class="ml-status training" *ngIf="isTraining">Treinando...</span>
         <span class="ml-status ready" *ngIf="model && !isTraining">Modelo pronto</span>
         <span class="ml-sub">{{ ratings.length }} filmes avaliados</span>
+        <span class="ml-warning" *ngIf="ratings.length < 3 && !isTraining">
+          Avalie pelo menos mais {{ 3 - ratings.length }} filme{{ 3 - ratings.length > 1 ? 's' : '' }} para gerar recomendações
+        </span>
       </div>
       <div class="ml-actions">
         <button class="btn-recommend" (click)="onRecommend()" [disabled]="isTraining || ratings.length < 3">
@@ -51,8 +54,8 @@
 
   <section class="rec-section" *ngIf="recommendations.length > 0">
     <h2 class="section-title">
-      Recomendados para você
-      <span class="rec-badge">via TF.js</span>
+      {{ ratings.length > 0 ? 'Recomendados para você' : 'Populares no momento' }}
+      <span class="rec-badge" *ngIf="ratings.length > 0">via TF.js</span>
     </h2>
     <div class="movies-grid">
       <div class="movie-card" *ngFor="let movie of recommendations" (click)="onMovieSelected(movie)">
@@ -64,7 +67,9 @@
             class="poster"
           />
           <div *ngIf="!movie.poster_path" class="poster poster-placeholder"></div>
-          <span class="rating-badge score">{{ (movie.score! * 10).toFixed(1) }}</span>
+          <span class="rating-badge score" *ngIf="movie.score !== undefined">
+            {{ (movie.score! * 10).toFixed(1) }}
+          </span>
         </div>
         <div class="card-info">
           <p class="title">{{ movie.title }}</p>

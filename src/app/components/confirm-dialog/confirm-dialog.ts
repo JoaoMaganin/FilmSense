@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Rating } from '../../models/rating.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-confirm-dialog',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './confirm-dialog.html',
   styleUrl: './confirm-dialog.scss',
 })

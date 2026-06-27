@@ -64,7 +64,15 @@ export class HomeComponent implements OnInit {
     // fallback para visitante (não tem evento de auth)
     if (this.supabase.isGuest) {
       this.ratings = [...await this.supabase.getRatings()];
+      await this.loadGuestSuggestions();
+      this.cdr.detectChanges();
     }
+  }
+
+  async loadGuestSuggestions() {
+    const popular = await this.tmdbService.getPopularMovies(1);
+    this.recommendations = popular;
+    this.cdr.detectChanges();
   }
 
   async onRated(rating: Rating) {
