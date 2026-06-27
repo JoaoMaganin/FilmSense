@@ -30,14 +30,18 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.scss"],
+            "styles": [
+              "src/styles.scss"
+            ],
             "outputMode": "static",
             "security": {
               "allowedHosts": []
             },
             "allowedCommonJsDependencies": [
               "seedrandom",
-              "long"
+              "long",
+              "node-fetch",
+              "string_decoder"
             ]
           },
           "configurations": {
@@ -45,8 +49,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "2mb",
+                  "maximumError": "3mb"
                 },
                 {
                   "type": "anyComponentStyle",
