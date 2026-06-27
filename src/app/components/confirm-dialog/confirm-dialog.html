@@ -1,0 +1,17 @@
+<div class="overlay" (click)="cancel.emit()">
+  <div class="dialog" (click)="$event.stopPropagation()">
+    <div class="movie-preview" *ngIf="rating.poster_path">
+      <img [src]="'https://image.tmdb.org/t/p/w300' + rating.poster_path" [alt]="rating.title" class="poster" />
+    </div>
+    <div class="icon" *ngIf="!rating.poster_path">
+      <i class="ti ti-trash" aria-hidden="true"></i>
+    </div>
+    <p class="title">Remover avaliação?</p>
+    <p class="movie-name">{{ rating.title }}</p>
+    <p class="subtitle">Sua nota <strong>{{ rating.rating }}</strong> será removida e não poderá ser recuperada.</p>
+    <div class="actions">
+      <button class="btn-cancel" (click)="cancel.emit()">Cancelar</button>
+      <button class="btn-confirm" (click)="confirm.emit()">Remover</button>
+    </div>
+  </div>
+</div>

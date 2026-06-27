@@ -9,10 +9,11 @@ import * as tf from '@tensorflow/tfjs';
 import { trainModel } from '../../ml/model';
 import { recommend } from '../../ml/recommend';
 import { TmdbService } from '../../services/tmdb.service';
+import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-home',
-  imports: [NavbarComponent, RatingModal, CommonModule, SlicePipe],
+  imports: [NavbarComponent, RatingModal, CommonModule, SlicePipe, ConfirmDialog],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -30,7 +31,10 @@ export class HomeComponent implements OnInit {
   showAllRatings = false;
 
   selectedMovie: TmdbMovie | null = null;
-  showConfirmation = false;
+
+  toastMessage = '';
+
+  ratingToDelete: Rating | null = null;
 
   get visibleRatings() {
     return this.showAllRatings ? this.ratings : this.ratings.slice(0, 6);
@@ -66,9 +70,8 @@ export class HomeComponent implements OnInit {
   async onRated(rating: Rating) {
     await this.supabase.saveRating(rating);
     this.ratings = [...await this.supabase.getRatings()];
-    this.showConfirmation = true;
+    this.showToast('Avaliação salva com sucesso!');
     this.cdr.detectChanges();
-    setTimeout(() => this.showConfirmation = false, 3000);
   }
 
   async onRatingSelected(rating: Rating) {
@@ -92,5 +95,32 @@ export class HomeComponent implements OnInit {
     const ratedIds = this.ratings.map(rating => rating.tmdb_id);
     this.recommendations = await recommend(this.model!, popularMovies, ratedIds);
     this.cdr.detectChanges();
+  }
+
+  onDeleteRating(rating: Rating, event: Event) {
+    event.stopPropagation();
+    this.ratingToDelete = rating;
+  }
+
+  async onConfirmDelete() {
+    if (!this.ratingToDelete) return;
+    await this.supabase.deleteRating(this.ratingToDelete.tmdb_id);
+    this.ratings = [...await this.supabase.getRatings()];
+    this.ratingToDelete = null;
+    this.showToast('Avaliação excluída com sucesso!');
+    this.cdr.detectChanges();
+  }
+
+  onCancelDelete() {
+    this.ratingToDelete = null;
+  }
+
+  showToast(message: string) {
+    this.toastMessage = message;
+    this.cdr.detectChanges();
+    setTimeout(() => {
+      this.toastMessage = '';
+      this.cdr.detectChanges();
+    }, 3000);
   }
 }

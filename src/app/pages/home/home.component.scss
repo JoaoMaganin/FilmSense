@@ -118,9 +118,9 @@
   bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(29, 158, 117, 0.15);
-  border: 0.5px solid rgba(29, 158, 117, 0.3);
-  color: #5DCAA5;
+  background: rgba(29, 158, 117);
+  border: 0.5px solid rgba(29, 158, 117);
+  color: #ffffff;
   font-size: 13px;
   padding: 10px 20px;
   border-radius: 8px;
@@ -228,4 +228,31 @@
 .rating-badge.score {
   background: rgba(29, 158, 117, 0.2);
   color: #5DCAA5;
+}
+
+.delete-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s;
+
+  &:hover {
+    color: #E24B4A;
+  }
+}
+
+.poster-wrapper:hover .delete-btn {
+  opacity: 1;
 }

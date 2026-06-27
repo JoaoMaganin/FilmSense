@@ -14,6 +14,9 @@
           />
           <div *ngIf="!rating.poster_path" class="poster poster-placeholder"></div>
           <span class="rating-badge">{{ rating.rating }}</span>
+          <button class="delete-btn" (click)="onDeleteRating(rating, $event)">
+            <i class="ti ti-trash" aria-hidden="true">🗑️</i>
+          </button>
         </div>
         <div class="card-info">
           <p class="title">{{ rating.title }}</p>
@@ -21,6 +24,7 @@
         </div>
       </div>
     </div>
+    
     <button class="btn-expand" (click)="showAllRatings = !showAllRatings">
       {{ showAllRatings ? 'Ver menos' : 'Ver todas as avaliações (' + ratings.length + ')' }}
     </button>
@@ -78,6 +82,13 @@
   (rated)="onRated($event)"
 />
 
-<div class="toast" *ngIf="showConfirmation">
-  Avaliação salva com sucesso!
+<app-confirm-dialog
+  *ngIf="ratingToDelete"
+  [rating]="ratingToDelete"
+  (confirm)="onConfirmDelete()"
+  (cancel)="onCancelDelete()"
+/>
+
+<div class="toast" *ngIf="toastMessage">
+  {{ toastMessage }}
 </div>
