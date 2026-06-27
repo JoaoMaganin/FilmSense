@@ -11,9 +11,6 @@ export class SupabaseService {
   private guestRatings: Rating[] = [];
 
   constructor() {
-    console.log('URL:', environment.supabaseUrl);
-    console.log('KEY:', environment.supabaseKey);
-
     this.supabase = createClient(
       environment.supabaseUrl,
       environment.supabaseKey
