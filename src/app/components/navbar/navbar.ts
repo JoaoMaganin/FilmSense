@@ -35,15 +35,18 @@ export class NavbarComponent implements OnInit {
   async onSearch(query: string) {
     if (!query.trim()) { // clean the search when input is empty
       this.searchResults = [];
+      this.cdr.detectChanges();
       return
     }
     this.searchResults = await this.tmdb.searchMovies(query);
+    this.cdr.detectChanges();
   }
 
   selectMovie(movie: TmdbMovie) {
     this.movieSelected.emit(movie);
     this.searchResults = [];
     this.resetSearch = !this.resetSearch;
+    this.cdr.detectChanges()
   }
 
   async signOut() {

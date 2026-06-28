@@ -26,6 +26,8 @@
   flex: 1;
   position: relative;
   min-width: 0;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
 .dropdown {
