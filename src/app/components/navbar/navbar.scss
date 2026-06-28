@@ -1,8 +1,8 @@
 .navbar {
   display: flex;
   align-items: center;
-  gap: 24px;
-  padding: 0 24px;
+  gap: 12px;
+  padding: 0 16px;
   height: 56px;
   background: #0d0d0f;
   border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
@@ -19,16 +19,13 @@
   white-space: nowrap;
   flex-shrink: 0;
 
-  span {
-    color: #7F77DD;
-  }
+  span { color: #7F77DD; }
 }
 
 .search-wrapper {
   flex: 1;
-  max-width: 480px;
   position: relative;
-  margin: 0 auto;
+  min-width: 0;
 }
 
 .dropdown {
@@ -53,9 +50,7 @@
   cursor: pointer;
   transition: background 0.15s;
 
-  &:hover {
-    background: rgba(255, 255, 255, 0.05);
-  }
+  &:hover { background: rgba(255, 255, 255, 0.05); }
 }
 
 .poster {
@@ -67,9 +62,7 @@
   flex-shrink: 0;
 }
 
-.info {
-  min-width: 0;
-}
+.info { min-width: 0; }
 
 .title {
   font-size: 13px;
@@ -89,14 +82,19 @@
 .user {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-left: auto;
+  gap: 8px;
   flex-shrink: 0;
 }
 
 .user-name {
   font-size: 13px;
   color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px;
+
+  @media (max-width: 480px) { display: none; }
 }
 
 .btn-logout {
@@ -107,6 +105,7 @@
   border-radius: 6px;
   padding: 5px 10px;
   cursor: pointer;
+  white-space: nowrap;
   transition: color 0.15s, border-color 0.15s;
 
   &:hover {

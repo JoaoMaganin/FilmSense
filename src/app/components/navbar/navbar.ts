@@ -38,10 +38,6 @@ export class NavbarComponent implements OnInit {
       return
     }
     this.searchResults = await this.tmdb.searchMovies(query);
-    console.log('filme exemplo: ', this.searchResults[0]);
-    console.log('filme exemplo: ', this.searchResults[1]);
-    console.log('filme exemplo: ', this.searchResults[2]);
-    console.log('filme exemplo: ', this.searchResults[3]);
   }
 
   selectMovie(movie: TmdbMovie) {

@@ -6,6 +6,11 @@
   align-items: center;
   justify-content: center;
   z-index: 300;
+
+  @media (min-width: 600px) {
+    align-items: center;
+    padding: 24px;
+  }
 }
 
 .modal {
@@ -15,6 +20,13 @@
   width: 600px;
   max-width: calc(100vw - 32px);
   overflow: hidden;
+
+  @media (min-width: 600px) {
+    border-radius: 16px;
+    width: 640px;
+    max-width: calc(100vw - 32px);
+    max-height: calc(100vh - 48px);
+  }
 }
 
 .backdrop {
@@ -135,6 +147,10 @@
 .stars {
   display: flex;
   gap: 6px;
+
+  @media (max-width: 480px) {
+    gap: 3px;
+  }
 }
 
 .star-btn {
@@ -153,6 +169,11 @@
     background: rgba(127, 119, 221, 0.2);
     border-color: rgba(127, 119, 221, 0.4);
     color: #AFA9EC;
+  }
+
+  @media (max-width: 480px) {
+    padding: 8px 0;
+    font-size: 11px;
   }
 }
 

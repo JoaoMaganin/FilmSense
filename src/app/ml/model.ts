@@ -62,7 +62,7 @@ export async function trainModel(ratings: Rating[]): Promise<tf.Sequential> {
     const model = await buildModel(trainData)
 
     trainData.xs.dispose();
-    trainData.ys.dispose()
+    trainData.ys.dispose();
 
     return model
 }
