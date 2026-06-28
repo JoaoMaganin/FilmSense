@@ -32,7 +32,7 @@
     <div class="ml-bar">
       <div class="ml-info">
         <span class="ml-status" *ngIf="!model && !isTraining">Modelo não treinado</span>
-        <span class="ml-status training" *ngIf="isTraining">Treinando...</span>
+        <span class="ml-status training" *ngIf="isTraining">{{ trainingStatus }}</span>
         <span class="ml-status ready" *ngIf="model && !isTraining">Modelo pronto</span>
         <span class="ml-sub">{{ ratings.length }} filmes avaliados</span>
         <span class="ml-warning" *ngIf="ratings.length < 3 && !isTraining">

@@ -39,6 +39,8 @@ export class HomeComponent implements OnInit {
 
   currentRating = 0;
 
+  trainingStatus = '';
+
   get visibleRatings() {
     return this.showAllRatings ? this.ratings : this.ratings.slice(0, 6);
   }
@@ -103,24 +105,77 @@ export class HomeComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
+  getTopGenres(n: number): number[] {
+    const genreScores: Record<number, number> = {};
+
+    this.ratings
+      .filter(r => r.rating >= 7)
+      .forEach(rating => {
+        rating.genres.forEach(genre => {
+          genreScores[genre] = (genreScores[genre] ?? 0) + rating.rating;
+        });
+      });
+
+    return Object.entries(genreScores)
+      .sort((a, b) => Number(b[1]) - Number(a[1]))
+      .slice(0, n)
+      .map(([id]) => Number(id));
+  }
+
+  async getTopKeywords(n: number): Promise<number[]> {
+    const goodRatings = this.ratings.filter(r => r.rating > 7);
+
+    const keywordCounts: Record<number, number> = {};
+
+    await Promise.all(
+      goodRatings.map(async rating => {
+        const keywords = await this.tmdbService.getMovieKeywords(rating.tmdb_id);
+        keywords.forEach(id => {
+          keywordCounts[id] = (keywordCounts[id] ?? 0) + 1;
+        });
+      })
+    );
+
+    return Object.entries(keywordCounts)
+      .sort((a, b) => Number(b[1]) - Number(a[1]))
+      .slice(0, n)
+      .map(([id]) => Number(id));
+  }
+
   async onRecommend() {
     this.isTraining = true;
-    this.model = await trainModel(this.ratings);
-    this.isTraining = false;
+    this.trainingStatus = 'Analisando seu histórico...';
     this.cdr.detectChanges();
 
-    const pages = await Promise.all([1, 2, 3, 4, 5].map(p => this.tmdbService.getPopularMovies(p)));
-    const allMovies = pages.flat();
+    const topGenres = this.getTopGenres(3);
+    const topKeywords = await this.getTopKeywords(5);
 
+    this.trainingStatus = 'Buscando candidatos e treinando modelo...';
+    this.cdr.detectChanges();
+
+    // treino e busca em paralelo
+    const [trainedModel, ...results] = await Promise.all([
+      trainModel(this.ratings),
+      ...([1, 2, 3].map(p => this.tmdbService.getPopularMovies(p))),
+      ...([1, 2].map(p => this.tmdbService.getTopRatedMovies(p))),
+      ...topGenres.map(g => this.tmdbService.getMoviesByGenre(g)),
+      ...topKeywords.map(k => this.tmdbService.getMoviesByKeyword(k))
+    ]);
+
+    this.model = trainedModel as tf.Sequential;
+
+    const allMovies = (results as TmdbMovie[][]).flat();
     const seen = new Set<number>();
-    const popularMovies = allMovies.filter(movie => {
+    const candidates = allMovies.filter(movie => {
       if (seen.has(movie.id)) return false;
       seen.add(movie.id);
       return true;
     });
 
-    const ratedIds = this.ratings.map(rating => rating.tmdb_id);
-    this.recommendations = await recommend(this.model!, popularMovies, ratedIds);
+    const ratedIds = this.ratings.map(r => r.tmdb_id);
+    this.recommendations = await recommend(this.model!, candidates, ratedIds);
+    this.trainingStatus = '';
+    this.isTraining = false;
     this.cdr.detectChanges();
   }
 
